@@ -1,0 +1,468 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);font-size:15px;color:var(--color-text-primary);background:transparent}
+.app-shell{background:var(--color-background-secondary);border-radius:var(--border-radius-xl);border:0.5px solid var(--color-border-tertiary);overflow:hidden;max-width:380px;margin:0 auto;min-height:680px;display:flex;flex-direction:column}
+.app-header{background:#1B7A5A;padding:14px 16px 10px;color:#fff;flex-shrink:0}
+.app-title{font-size:17px;font-weight:500;letter-spacing:-0.3px}
+.app-sub{font-size:11px;opacity:0.8;margin-top:2px}
+.age-tabs{display:flex;border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);flex-shrink:0}
+.age-tab{flex:1;padding:9px 4px;font-size:11px;font-weight:500;text-align:center;cursor:pointer;border:none;background:transparent;color:var(--color-text-secondary);border-bottom:2px solid transparent;transition:all .15s}
+.age-tab.active{color:#1B7A5A;border-bottom-color:#1B7A5A}
+.nav-tabs{display:flex;overflow-x:auto;gap:6px;padding:10px 12px;background:var(--color-background-primary);border-bottom:0.5px solid var(--color-border-tertiary);scrollbar-width:none;flex-shrink:0}
+.nav-tabs::-webkit-scrollbar{display:none}
+.nav-btn{white-space:nowrap;padding:5px 11px;border-radius:20px;font-size:11px;font-weight:500;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-secondary);cursor:pointer;transition:all .15s}
+.nav-btn.active{background:#1B7A5A;color:#fff;border-color:#1B7A5A}
+.content{flex:1;overflow-y:auto;padding:14px 14px 24px;scrollbar-width:none}
+.content::-webkit-scrollbar{display:none}
+.section-card{background:var(--color-background-primary);border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary);padding:14px;margin-bottom:12px}
+.section-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.6px;color:#1B7A5A;margin-bottom:8px}
+.section-title{font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px}
+.tag-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.tag{padding:3px 9px;border-radius:12px;font-size:11px;font-weight:500}
+.tag-green{background:#EAF3DE;color:#27500A}
+.tag-teal{background:#E1F5EE;color:#085041}
+.tag-red{background:#FCEBEB;color:#791F1F}
+.tag-amber{background:#FAEEDA;color:#633806}
+.tag-blue{background:#E6F1FB;color:#0C447C}
+.tag-purple{background:#EEEDFE;color:#3C3489}
+.tag-gray{background:#F1EFE8;color:#444441}
+.milestone-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.milestone-row:last-child{border-bottom:none;padding-bottom:0}
+.ms-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.ms-body{flex:1}
+.ms-title{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+.ms-sub{font-size:11px;color:var(--color-text-secondary);margin-top:1px}
+.warn-box{background:#FAEEDA;border:0.5px solid #EF9F27;border-radius:var(--border-radius-md);padding:10px 12px;margin-top:10px}
+.warn-title{font-size:12px;font-weight:500;color:#633806;display:flex;align-items:center;gap:5px}
+.warn-text{font-size:11px;color:#854F0B;margin-top:4px;line-height:1.5}
+.danger-box{background:#FCEBEB;border:0.5px solid #F09595;border-radius:var(--border-radius-md);padding:10px 12px;margin-top:10px}
+.danger-title{font-size:12px;font-weight:500;color:#791F1F;display:flex;align-items:center;gap:5px}
+.danger-text{font-size:11px;color:#A32D2D;margin-top:4px;line-height:1.5}
+.med-card{background:var(--color-background-primary);border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary);padding:12px;margin-bottom:10px}
+.med-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.med-icon{width:36px;height:36px;border-radius:8px;background:#E1F5EE;display:flex;align-items:center;justify-content:center;color:#0F6E56;font-size:18px;flex-shrink:0}
+.med-name{font-size:14px;font-weight:500}
+.med-generic{font-size:11px;color:var(--color-text-secondary);margin-top:1px}
+.med-row{display:flex;gap:6px;margin-top:6px;align-items:flex-start}
+.med-key{font-size:11px;font-weight:500;color:var(--color-text-secondary);min-width:80px;flex-shrink:0}
+.med-val{font-size:11px;color:var(--color-text-primary);line-height:1.5;flex:1}
+.consult-box{background:#E1F5EE;border:0.5px solid #5DCAA5;border-radius:var(--border-radius-md);padding:9px 11px;margin-top:10px}
+.consult-text{font-size:11px;color:#085041;font-weight:500}
+.illness-card{background:var(--color-background-primary);border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary);padding:12px;margin-bottom:10px;cursor:pointer}
+.illness-head{display:flex;align-items:center;justify-content:space-between}
+.illness-name{font-size:13px;font-weight:500}
+.illness-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500}
+.illness-body{margin-top:8px;display:none}
+.illness-body.open{display:block}
+.ill-row{margin-top:6px}
+.ill-key{font-size:10px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+.ill-val{font-size:11px;color:var(--color-text-primary);line-height:1.6}
+.sleep-bar{height:8px;background:var(--color-background-tertiary);border-radius:4px;margin:6px 0 10px;overflow:hidden}
+.sleep-fill{height:100%;border-radius:4px;background:#1B7A5A;transition:width .4s}
+.stat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:6px}
+.stat-cell{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px}
+.stat-num{font-size:20px;font-weight:500;color:#1B7A5A}
+.stat-lbl{font-size:10px;color:var(--color-text-secondary);margin-top:2px}
+.food-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:6px}
+.food-item{padding:7px 9px;border-radius:var(--border-radius-md);font-size:11px;font-weight:500;display:flex;align-items:center;gap:5px}
+.food-ok{background:#EAF3DE;color:#27500A}
+.food-no{background:#FCEBEB;color:#791F1F}
+.drink-item{padding:7px 9px;border-radius:var(--border-radius-md);font-size:11px;font-weight:500;display:flex;align-items:center;gap:5px;background:#E6F1FB;color:#0C447C;margin-bottom:5px}
+.activity-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.activity-item:last-child{border-bottom:none}
+.act-icon{width:28px;height:28px;border-radius:6px;background:#E1F5EE;display:flex;align-items:center;justify-content:center;font-size:14px;color:#0F6E56;flex-shrink:0}
+.act-text{font-size:12px;color:var(--color-text-primary)}
+</style>
+
+<h2 class="sr-only">Child Care Guide — interactive app blueprint for ages 0–12, covering milestones, nutrition, sleep, illness, and medications.</h2>
+
+<div class="app-shell">
+  <div class="app-header">
+    <div class="app-title"><i class="ti ti-heart" aria-hidden="true"></i> Child Care Guide</div>
+    <div class="app-sub">Birth to 12 years · Parent health companion</div>
+  </div>
+
+  <div class="age-tabs" id="ageTabs">
+    <button class="age-tab active" onclick="setAge(0,this)">0–2 yrs</button>
+    <button class="age-tab" onclick="setAge(1,this)">3–6 yrs</button>
+    <button class="age-tab" onclick="setAge(2,this)">7–12 yrs</button>
+  </div>
+
+  <div class="nav-tabs" id="navTabs">
+    <button class="nav-btn active" onclick="setSection('milestones',this)">Milestones</button>
+    <button class="nav-btn" onclick="setSection('nutrition',this)">Nutrition</button>
+    <button class="nav-btn" onclick="setSection('sleep',this)">Sleep</button>
+    <button class="nav-btn" onclick="setSection('activity',this)">Activity</button>
+    <button class="nav-btn" onclick="setSection('health',this)">Health</button>
+    <button class="nav-btn" onclick="setSection('meds',this)">Medicines</button>
+  </div>
+
+  <div class="content" id="content"></div>
+</div>
+
+<script>
+let currentAge = 0;
+let currentSection = 'milestones';
+
+const ageData = [
+  {
+    label: "0–2 years",
+    sublabel: "Infants & Toddlers",
+    milestones: [
+      {icon:"ti-heart-rate-monitor", bg:"#E1F5EE", color:"#085041", title:"Physical growth", sub:"Triples birth weight by 12 months; height grows ~10 inches in year 1"},
+      {icon:"ti-hand-finger", bg:"#E6F1FB", color:"#0C447C", title:"Motor skills", sub:"Holds head up (3m) → sits alone (6m) → walks (12–15m) → runs (18–24m)"},
+      {icon:"ti-message", bg:"#EEEDFE", color:"#3C3489", title:"Language", sub:"Coos (2m) → babbles (6m) → first words (12m) → 2-word phrases (24m)"},
+      {icon:"ti-eye", bg:"#FAEEDA", color:"#633806", title:"Vision & hearing", sub:"Tracks faces by 2m; responds to name by 9m; imitates sounds"},
+      {icon:"ti-mood-smile", bg:"#FBEAF0", color:"#72243E", title:"Social", sub:"Smiles socially (2m) → recognises caregivers → separation anxiety (8–12m)"}
+    ],
+    nutrition: {
+      cals:"~800–1000 kcal/day (12–24m)",
+      protein:"~11–13g/day",
+      eat:["Breast milk / formula","Pureed veggies (6m+)","Soft fruits","Iron-fortified cereals","Mashed legumes","Soft cooked fish"],
+      avoid:["Honey (< 1 yr)","Whole cow's milk (< 1 yr)","Choking hazards","Added salt & sugar","Raw vegetables","Fruit juice (< 6m)"],
+      drinks:["Breast milk or formula (0–12m)","Whole cow's milk (12–24m)","Cooled boiled water (6m+)","No juice under 1 yr"]
+    },
+    sleep:{hours:"14–17 hrs (newborn) · 12–15 hrs (4–11m) · 11–14 hrs (1–2 yr)",naps:"2–3 naps (infant) → 1–2 naps (toddler)",tips:["Consistent bedtime routine","Safe sleep: back on firm flat surface","Keep room cool, dark & quiet","No screen time before bed"]},
+    activity:{note:"Supervised tummy time every day; free movement on safe surfaces",items:[
+      {icon:"ti-baby-carriage",text:"Tummy time: 15–30 min/day in short sessions"},
+      {icon:"ti-arrows-move",text:"Encourage reaching, grasping, and rolling"},
+      {icon:"ti-walk",text:"Assisted standing and cruising along furniture"},
+      {icon:"ti-music",text:"Singing, dancing, sensory play with textures"},
+      {icon:"ti-swimming",text:"Supervised water play (never leave unattended)"}
+    ]},
+    illnesses:[
+      {name:"Common cold",badge:"Very common",badgeBg:"#E6F1FB",badgeColor:"#0C447C",
+       symptoms:"Runny nose, mild fever, cough, sneezing, fussiness, poor feeding.",
+       prevention:"Handwashing; avoid sick contacts; breastfeeding boosts immunity.",
+       doctor:"Fever >38°C (< 3m) or >39°C (3–6m); breathing difficulty; refuses feeds; lasts >10 days.",
+       emergency:"Fast breathing, blue lips, severe lethargy, high-pitched cry, bulging fontanelle."},
+      {name:"Gastroenteritis",badge:"Common",badgeBg:"#FAEEDA",badgeColor:"#633806",
+       symptoms:"Vomiting, watery diarrhoea, low-grade fever, stomach cramping.",
+       prevention:"Hand hygiene; Rotavirus vaccine; safe water and food handling.",
+       doctor:"Sunken eyes, dry mouth, no wet nappy for 8+ hrs, blood in stool.",
+       emergency:"Severe dehydration, no tears, mottled skin, extreme lethargy."},
+      {name:"Nappy rash",badge:"Common",badgeBg:"#EAF3DE",badgeColor:"#27500A",
+       symptoms:"Red, inflamed skin in nappy area; baby cries during nappy change.",
+       prevention:"Frequent nappy changes; barrier cream; air dry skin.",
+       doctor:"Blisters, pus, spreading rash, no improvement in 3 days.",
+       emergency:"Rarely emergency; seek care if fever accompanies severe rash."},
+      {name:"Ear infection",badge:"Common",badgeBg:"#FBEAF0",badgeColor:"#72243E",
+       symptoms:"Ear pulling, crying, fever, trouble sleeping, poor hearing.",
+       prevention:"Breastfeeding; upright feeding; smoke-free environment.",
+       doctor:"Fever > 38°C, very painful, symptoms > 48hrs, discharge from ear.",
+       emergency:"Sudden hearing loss, swelling behind ear, severe headache, neck stiffness."}
+    ],
+    devTips:["Talk and sing to your baby constantly — it builds language","Respond promptly to cries; builds secure attachment","Read picture books daily from birth","Limit screen time: none under 18–24 months","Let babies explore textures safely"]
+  },
+  {
+    label: "3–6 years",
+    sublabel: "Preschool",
+    milestones: [
+      {icon:"ti-run", bg:"#E1F5EE", color:"#085041", title:"Motor & coordination", sub:"Hops, skips, catches balls; draws shapes; begins writing letters"},
+      {icon:"ti-pencil", bg:"#E6F1FB", color:"#0C447C", title:"Fine motor", sub:"Uses scissors; draws people with features; self-dressing"},
+      {icon:"ti-book", bg:"#EEEDFE", color:"#3C3489", title:"Language", sub:"250–2000+ words; complete sentences; tells simple stories; asks many questions"},
+      {icon:"ti-users", bg:"#FAEEDA", color:"#633806", title:"Social & emotional", sub:"Plays with other children; understands rules; shows empathy; some tantrums"},
+      {icon:"ti-bulb", bg:"#FBEAF0", color:"#72243E", title:"Cognitive", sub:"Counts to 10+; identifies colours/shapes; begins fantasy play; curious about 'why'"}
+    ],
+    nutrition: {
+      cals:"~1200–1400 kcal/day",
+      protein:"~13–20g/day",
+      eat:["Whole grain bread & cereals","Colourful fruits & vegetables","Lean meats & poultry","Eggs","Dairy (milk, yogurt, cheese)","Lentils & beans"],
+      avoid:["Sugary snacks & sweets","Carbonated drinks","Processed meats","Deep-fried fast foods","Excessive fruit juice","High-sodium snacks"],
+      drinks:["Low-fat milk 2–3 cups/day","Water as primary drink","Diluted fresh juice (occasional)","No sodas or energy drinks"]
+    },
+    sleep:{hours:"10–13 hours total",naps:"Most drop naps by 5 yrs; quiet rest time is fine",tips:["Consistent bedtime 7–8 PM","Calming wind-down routine","Screen-free 1 hr before bed","Night light acceptable if anxious"]},
+    activity:{note:"At least 3 hours of physical activity spread throughout the day",items:[
+      {icon:"ti-run",text:"Active free play: running, jumping, climbing"},
+      {icon:"ti-ball-football",text:"Ball games, throwing & catching"},
+      {icon:"ti-swimming",text:"Swimming lessons — essential water safety"},
+      {icon:"ti-friends",text:"Group games building social skills"},
+      {icon:"ti-bike",text:"Tricycle / balance bike riding"}
+    ]},
+    illnesses:[
+      {name:"Hand, Foot & Mouth",badge:"Very common",badgeBg:"#FAEEDA",badgeColor:"#633806",
+       symptoms:"Fever, sores in mouth, rash/blisters on hands and feet, poor appetite.",
+       prevention:"Hand hygiene; avoid sharing utensils; clean surfaces.",
+       doctor:"Can't swallow, dehydrated, fever > 3 days, widespread rash.",
+       emergency:"Confusion, neck stiffness, difficulty breathing, severe headache."},
+      {name:"Chicken pox",badge:"Common",badgeBg:"#EEEDFE",badgeColor:"#3C3489",
+       symptoms:"Itchy blister rash spreading across body, fever, tiredness.",
+       prevention:"Varicella vaccine; avoid contact with infected individuals.",
+       doctor:"Secondary skin infection, breathing problems, high fever, rash near eyes.",
+       emergency:"Trouble breathing, extreme drowsiness, stiff neck, rash very painful."},
+      {name:"Tonsillitis",badge:"Common",badgeBg:"#FCEBEB",badgeColor:"#791F1F",
+       symptoms:"Sore throat, swollen tonsils, fever, trouble swallowing, white patches.",
+       prevention:"Handwashing; avoid sharing cups; treat allergies promptly.",
+       doctor:"Fever >38.5°C, can't swallow saliva, symptoms >5 days, recurring episodes.",
+       emergency:"Difficulty breathing or swallowing, drooling, muffled voice, stiff neck."},
+      {name:"Allergic rhinitis",badge:"Chronic",badgeBg:"#E6F1FB",badgeColor:"#0C447C",
+       symptoms:"Runny/blocked nose, sneezing, itchy eyes, worse in morning or outdoors.",
+       prevention:"Reduce allergen exposure; keep home dust-free; HEPA filters.",
+       doctor:"Interferes with sleep or school; possible asthma link; needs confirmation.",
+       emergency:"Severe breathing difficulty, throat swelling, anaphylaxis signs."}
+    ],
+    devTips:["Read together every day — literacy foundation","Let them help with simple tasks (builds confidence)","Use praise for effort, not just results","Set consistent, clear boundaries","Encourage imaginative and creative play"]
+  },
+  {
+    label: "7–12 years",
+    sublabel: "School Age",
+    milestones: [
+      {icon:"ti-brain", bg:"#E1F5EE", color:"#085041", title:"Cognitive", sub:"Logical reasoning, reading fluency, longer attention spans, problem-solving"},
+      {icon:"ti-pencil", bg:"#E6F1FB", color:"#0C447C", title:"Academic skills", sub:"Reading, writing, maths solidify; learns to research and organise information"},
+      {icon:"ti-run", bg:"#EEEDFE", color:"#3C3489", title:"Physical", sub:"Continued growth; gross & fine motor mature; puberty may begin (girls 8–12, boys 10–12)"},
+      {icon:"ti-users", bg:"#FAEEDA", color:"#633806", title:"Social", sub:"Peer friendships deepen; team cooperation; cares about fairness and rules"},
+      {icon:"ti-mood-happy", bg:"#FBEAF0", color:"#72243E", title:"Emotional", sub:"Develops self-concept; more private; can manage emotions with guidance"}
+    ],
+    nutrition: {
+      cals:"~1400–1800 kcal/day",
+      protein:"~20–34g/day",
+      eat:["Whole grains (oats, brown rice)","Varied fruits & vegetables","Lean protein (chicken, fish, eggs)","Dairy or calcium alternatives","Nuts & seeds","Legumes & pulses"],
+      avoid:["Energy drinks","Excessive sweets & chocolate","Processed/ultra-processed foods","Sugary cereals","Fried snacks","Excessive screen-time eating"],
+      drinks:["Water as primary (6–8 glasses/day)","Low-fat milk","Herbal teas (occasional)","No energy or sports drinks","Limit juice to 150ml/day"]
+    },
+    sleep:{hours:"9–11 hours per night",naps:"No naps needed; ensure consistent wake time",tips:["Phones outside bedroom at night","Wind-down routine still important","Consistent school night bedtime","Weekend schedule within 1 hr of school schedule"]},
+    activity:{note:"At least 60 minutes of moderate-to-vigorous activity every day",items:[
+      {icon:"ti-ball-football",text:"Team sports: cricket, football, basketball"},
+      {icon:"ti-swimming",text:"Swimming, cycling, martial arts"},
+      {icon:"ti-walk",text:"Walking or cycling to school when safe"},
+      {icon:"ti-yoga",text:"Stretching, gymnastics, dance"},
+      {icon:"ti-device-gamepad",text:"Active play > 2 hrs screen time daily limit"}
+    ]},
+    illnesses:[
+      {name:"Asthma",badge:"Chronic",badgeBg:"#E6F1FB",badgeColor:"#0C447C",
+       symptoms:"Wheezing, shortness of breath, chest tightness, persistent cough (especially at night).",
+       prevention:"Identify triggers; use preventer inhalers; keep allergens low.",
+       doctor:"Symptoms more than 2x/week, affecting sleep or activity, needing reliever > 2x/week.",
+       emergency:"Rapid breathing, blue lips, can't speak in full sentences, reliever not working."},
+      {name:"Influenza",badge:"Seasonal",badgeBg:"#FAEEDA",badgeColor:"#633806",
+       symptoms:"Sudden high fever, body aches, headache, cough, sore throat, fatigue.",
+       prevention:"Annual influenza vaccine; hand hygiene; avoid sick contacts.",
+       doctor:"Fever >39°C for >3 days, worsening after initial improvement, ear pain.",
+       emergency:"Difficulty breathing, persistent chest pain, confusion, severe vomiting."},
+      {name:"Dental caries",badge:"Very common",badgeBg:"#EAF3DE",badgeColor:"#27500A",
+       symptoms:"Toothache, sensitivity to cold/hot, visible holes or dark spots in teeth.",
+       prevention:"Brush twice daily (fluoride toothpaste), limit sugary foods, 6-monthly dental checks.",
+       doctor:"Pain, swelling in gum, difficulty eating, loose teeth.",
+       emergency:"Severe facial swelling, high fever with dental pain, difficulty breathing/swallowing."},
+      {name:"Anxiety & stress",badge:"Growing concern",badgeBg:"#EEEDFE",badgeColor:"#3C3489",
+       symptoms:"Stomach aches, headaches, refusal to attend school, sleep problems, withdrawal.",
+       prevention:"Open communication; manageable schedules; safe emotional environment.",
+       doctor:"Significantly affecting school, friendships, or daily life; persistent for 4+ weeks.",
+       emergency:"Self-harm, talk of hopelessness, extreme withdrawal, panic attacks with physical symptoms."}
+    ],
+    devTips:["Encourage questions and critical thinking","Support healthy friendships; discuss peer pressure","Teach digital literacy and online safety","Allow age-appropriate independence and decision-making","Discuss puberty openly and without embarrassment"]
+  }
+];
+
+const medications = [
+  {
+    name:"Paracetamol",generic:"Acetaminophen",icon:"ti-pill",
+    purpose:"Fever & mild-to-moderate pain relief (headache, toothache, post-vaccination fever).",
+    age:"Suitable from birth (weight-based dosing). Check formulation for infant vs. child.",
+    dosage:"10–15 mg/kg every 4–6 hrs. Max 4 doses/24 hrs. Specific amounts require doctor/pharmacist guidance.",
+    side:"Generally well tolerated. Rare: skin rash, liver damage with overdose.",
+    precaution:"Do not exceed recommended dose. Avoid if liver disease. Check other medicines don't also contain paracetamol."
+  },
+  {
+    name:"Ibuprofen",generic:"Ibuprofen",icon:"ti-pill",
+    purpose:"Fever, pain, and inflammation (earache, teething, muscle pain).",
+    age:"From 6 months and above. Not for infants under 6 months.",
+    dosage:"5–10 mg/kg every 6–8 hrs with food. Max 3 doses/24 hrs. Amounts require professional guidance.",
+    side:"Stomach upset, nausea. Rare: stomach ulcer, kidney issues with overuse.",
+    precaution:"Give with food. Avoid if dehydrated, asthma, or kidney/liver disease. Not for chickenpox."
+  },
+  {
+    name:"Salbutamol (Ventolin)",generic:"Salbutamol sulfate",icon:"ti-air",
+    purpose:"Relieves bronchospasm in asthma and wheezing. Quick-relief 'rescue' inhaler.",
+    age:"All ages — dose and device (spacer, mask) vary by age.",
+    dosage:"2–4 puffs via spacer every 4–6 hrs for acute episodes. Follow asthma action plan.",
+    side:"Tremor, fast heartbeat, mild headache. Overuse can reduce effectiveness.",
+    precaution:"Always use with spacer in young children. Not a preventer medicine. Seek urgent care if no improvement."
+  },
+  {
+    name:"Britanyl",generic:"Terbutaline sulfate",icon:"ti-air",
+    purpose:"Bronchodilator for asthma, wheezing, and bronchospasm. Similar to salbutamol.",
+    age:"Tablets from 3 years; inhaler as directed by doctor.",
+    dosage:"Dose is weight and age dependent. Prescribed individually. Do not self-dose.",
+    side:"Tremor, palpitations, headache, muscle cramps.",
+    precaution:"Use only as prescribed. Not a substitute for preventer therapy. Avoid in severe heart conditions."
+  },
+  {
+    name:"Cetirizine",generic:"Cetirizine hydrochloride",icon:"ti-droplet",
+    purpose:"Antihistamine for allergic rhinitis, urticaria (hives), hay fever, itching.",
+    age:"Syrup from 2 years; tablets from 6 years.",
+    dosage:"2.5 mg (2–5 yrs) to 5–10 mg (6+ yrs) once daily. Evening preferred to reduce drowsiness.",
+    side:"Drowsiness, dry mouth, headache, stomach upset.",
+    precaution:"May cause drowsiness — avoid after school activities requiring alertness. Check with doctor for kidney disease."
+  },
+  {
+    name:"Rigix",generic:"Cetirizine (brand name common in Pakistan/ME)",icon:"ti-droplet",
+    purpose:"Allergic conditions: rhinitis, urticaria, eczema flare, insect bite reactions.",
+    age:"From 2 years (syrup formulation). Tablet form from 6 years.",
+    dosage:"As per Cetirizine dosing guidelines above. Follow doctor's instructions.",
+    side:"Mild sedation, dry mouth, dizziness in some children.",
+    precaution:"Same as cetirizine. Confirm the formulation with pharmacist before use."
+  },
+  {
+    name:"ORS (Oral Rehydration Salts)",generic:"Sodium chloride + Potassium chloride + Glucose",icon:"ti-droplet-filled",
+    purpose:"Prevents and treats dehydration from diarrhoea and vomiting (gastroenteritis).",
+    age:"All ages including newborns — volume differs by age and weight.",
+    dosage:"50–100 ml/kg over 4 hrs for mild dehydration. Small sips every few minutes. Volume guided by healthcare provider.",
+    side:"Rarely: nausea if given too fast. Not a side effect at correct rate.",
+    precaution:"Mix exactly as directed on packet. Never add extra sugar or salt. If vomiting persists or worsens, seek medical care."
+  }
+];
+
+function setAge(idx, btn) {
+  currentAge = idx;
+  document.querySelectorAll('.age-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function setSection(sec, btn) {
+  currentSection = sec;
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function toggleIllness(el) {
+  const body = el.querySelector('.illness-body');
+  body.classList.toggle('open');
+}
+
+function render() {
+  const d = ageData[currentAge];
+  const c = document.getElementById('content');
+
+  if (currentSection === 'meds') {
+    c.innerHTML = renderMeds();
+    return;
+  }
+
+  if (currentSection === 'milestones') {
+    let ms = d.milestones.map(m => `
+      <div class="milestone-row">
+        <div class="ms-icon" style="background:${m.bg}"><i class="ti ${m.icon}" style="font-size:15px;color:${m.color}" aria-hidden="true"></i></div>
+        <div class="ms-body"><div class="ms-title">${m.title}</div><div class="ms-sub">${m.sub}</div></div>
+      </div>`).join('');
+    let tips = d.devTips.map(t => `<div style="font-size:12px;color:var(--color-text-primary);padding:5px 0 5px 14px;border-left:2px solid #1B7A5A;margin-bottom:6px;line-height:1.5">${t}</div>`).join('');
+    c.innerHTML = `
+      <div class="section-card">
+        <div class="section-label"><i class="ti ti-chart-line" aria-hidden="true"></i> ${d.label} — ${d.sublabel}</div>
+        ${ms}
+      </div>
+      <div class="section-card">
+        <div class="section-label"><i class="ti ti-bulb" aria-hidden="true"></i> Development tips</div>
+        ${tips}
+      </div>`;
+    return;
+  }
+
+  if (currentSection === 'nutrition') {
+    const n = d.nutrition;
+    let eat = n.eat.map(f => `<div class="food-item food-ok"><i class="ti ti-check" aria-hidden="true"></i>${f}</div>`).join('');
+    let avoid = n.avoid.map(f => `<div class="food-item food-no"><i class="ti ti-x" aria-hidden="true"></i>${f}</div>`).join('');
+    let drinks = n.drinks.map(dr => `<div class="drink-item"><i class="ti ti-droplet" aria-hidden="true"></i>${dr}</div>`).join('');
+    c.innerHTML = `
+      <div class="section-card">
+        <div class="section-label"><i class="ti ti-apple" aria-hidden="true"></i> Daily requirements</div>
+        <div class="stat-grid">
+          <div class="stat-cell"><div class="stat-num">${n.cals.split(' ')[0]}</div><div class="stat-lbl">calories/day</div></div>
+          <div class="stat-cell"><div class="stat-num">${n.protein.split('/')[0]}</div><div class="stat-lbl">protein/day</div></div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="section-label"><i class="ti ti-check" aria-hidden="true"></i> Healthy foods to eat</div>
+        <div class="food-grid">${eat}</div>
+      </div>
+      <div class="section-card">
+        <div class="section-label"><i class="ti ti-x" aria-hidden="true"></i> Foods to avoid</div>
+        <div class="food-grid">${avoid}</div>
+      </div>
+      <div class="section-card">
+        <div class="section-label"><i class="ti ti-droplet" aria-hidden="true"></i> Recommended drinks</div>
+        ${drinks}
+      </div>`;
+    return;
+  }
+
+  if (currentSection === 'sleep') {
+    const s = d.sleep;
+    const hrs = parseInt(s.hours);
+    const pct = Math.round((hrs / 17) * 100);
+    let tipList = s.tips.map(t => `<div style="font-size:12px;padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;gap:8px;align-items:flex-start"><i class="ti ti-moon" style="font-size:14px;color:#1B7A5A;margin-top:1px" aria-hidden="true"></i><span>${t}</span></div>`).join('');
+    c.innerHTML = `
+      <div class="section-card">
+        <div class="section-label"><i class="ti ti-moon" aria-hidden="true"></i> Sleep requirements</div>
+        <div style="font-size:20px;font-weight:500;color:#1B7A5A;margin:4px 0 2px">${hrs}+ hrs</div>
+        <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:6px">${s.hours}</div>
+        <div class="sleep-bar"><div class="sleep-fill" style="width:${pct}%"></div></div>
+        <div style="font-size:12px;color:var(--color-text-secondary)">${s.naps}</div>
+      </div>
+      <div class="section-card">
+        <div class="section-label"><i class="ti ti-star" aria-hidden="true"></i> Sleep hygiene tips</div>
+        ${tipList}
+      </div>`;
+    return;
+  }
+
+  if (currentSection === 'activity') {
+    const a = d.activity;
+    let items = a.items.map(i => `
+      <div class="activity-item">
+        <div class="act-icon"><i class="ti ${i.icon}" aria-hidden="true"></i></div>
+        <div class="act-text">${i.text}</div>
+      </div>`).join('');
+    c.innerHTML = `
+      <div class="section-card">
+        <div class="section-label"><i class="ti ti-run" aria-hidden="true"></i> Physical activity</div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:10px;line-height:1.5">${a.note}</div>
+        ${items}
+      </div>`;
+    return;
+  }
+
+  if (currentSection === 'health') {
+    let cards = d.illnesses.map((ill,i) => `
+      <div class="illness-card" onclick="this.querySelector('.illness-body').classList.toggle('open')">
+        <div class="illness-head">
+          <div class="illness-name">${ill.name}</div>
+          <span class="illness-badge" style="background:${ill.badgeBg};color:${ill.badgeColor}">${ill.badge}</span>
+        </div>
+        <div class="illness-body">
+          <div class="ill-row"><div class="ill-key">Symptoms</div><div class="ill-val">${ill.symptoms}</div></div>
+          <div class="ill-row"><div class="ill-key">Prevention</div><div class="ill-val">${ill.prevention}</div></div>
+          <div class="warn-box"><div class="warn-title"><i class="ti ti-stethoscope" aria-hidden="true"></i> See a doctor if</div><div class="warn-text">${ill.doctor}</div></div>
+          <div class="danger-box"><div class="danger-title"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Emergency signs</div><div class="danger-text">${ill.emergency}</div></div>
+        </div>
+      </div>`).join('');
+    c.innerHTML = `
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:10px;line-height:1.5">Tap an illness to expand details, prevention, and warning signs.</div>
+      ${cards}`;
+    return;
+  }
+}
+
+function renderMeds() {
+  const cards = medications.map(m => `
+    <div class="med-card">
+      <div class="med-header">
+        <div class="med-icon"><i class="ti ${m.icon}" aria-hidden="true"></i></div>
+        <div><div class="med-name">${m.name}</div><div class="med-generic">${m.generic}</div></div>
+      </div>
+      <div class="med-row"><span class="med-key">Purpose</span><span class="med-val">${m.purpose}</span></div>
+      <div class="med-row"><span class="med-key">Age suitability</span><span class="med-val">${m.age}</span></div>
+      <div class="med-row"><span class="med-key">Side effects</span><span class="med-val">${m.side}</span></div>
+      <div class="med-row"><span class="med-key">Precautions</span><span class="med-val">${m.precaution}</span></div>
+      <div class="consult-box"><div class="consult-text"><i class="ti ti-stethoscope" aria-hidden="true"></i> Dosage: ${m.dosage} — Always confirm dosage with a doctor or pharmacist before giving any medication.</div></div>
+    </div>`).join('');
+  return `
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:10px;line-height:1.5">Medication details are for reference only. Always consult a doctor before administering any medicine to a child.</div>
+    ${cards}`;
+}
+
+render();
+</script>
